@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import { Helmet } from "react-helmet-async";
+
 function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -47,6 +49,10 @@ function Home() {
 
   return (
     <div className="home-page">
+      <Helmet>
+        <title>WordPress React Dashboard</title>
+        <meta name="description" content="A headless WordPress dashboard built with React." />
+      </Helmet>
       <div className="posts-container">
         {posts.map((post) => (
           <article key={post.id} className="post-card">

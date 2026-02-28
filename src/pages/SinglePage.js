@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
+import { Helmet } from "react-helmet-async";
+
 function SinglePage() {
   const { id } = useParams();
   const [pageData, setPageData] = useState(null);
@@ -43,6 +45,10 @@ function SinglePage() {
 
   return (
     <article className="single-post">
+      <Helmet>
+        <title>{pageData.title.rendered.replace(/<\[^\]>]*>?/gm, "")} - WordPress React Dashboard</title>
+        <meta name="description" content={`Read ${pageData.title.rendered.replace(/<\[^\]>]*>?/gm, "")}`} />
+      </Helmet>
       <header className="single-post-header">
         <h1 dangerouslySetInnerHTML={{ __html: pageData.title.rendered }} />
       </header>

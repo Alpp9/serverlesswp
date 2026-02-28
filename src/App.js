@@ -1,4 +1,6 @@
+import { ThemeProvider } from "./ThemeContext";
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { useContext } from 'react';
 import Home from './pages/Home';
 import SinglePost from './pages/SinglePost';
 import SearchResults from './pages/SearchResults';
@@ -10,12 +12,15 @@ import NotFound from './pages/NotFound';
 import SearchBar from './components/SearchBar';
 import CategoriesNav from './components/CategoriesNav';
 import PagesNav from './components/PagesNav';
+import { ThemeContext } from './ThemeContext';
 import './App.css';
 
-function App() {
+function AppContent() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <Router>
-      <div className="App">
+      <div className={`App ${theme}-mode`}>
         <header className="nav-bar">
           <div className="nav-container">
             <Link to="/" className="site-title">
@@ -29,6 +34,9 @@ function App() {
 
             <div className="nav-actions">
               <SearchBar />
+              <button onClick={toggleTheme} className="theme-toggle-btn">
+                {theme === 'dark' ? '☀️' : '🌙'}
+              </button>
             </div>
           </div>
         </header>
@@ -47,6 +55,15 @@ function App() {
         </main>
       </div>
     </Router>
+  );
+}
+
+
+function App() {
+  return (
+    <ThemeProvider>
+      <AppContent />
+    </ThemeProvider>
   );
 }
 
