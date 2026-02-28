@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Helmet } from "react-helmet-async";
+import CommentForm from '../components/CommentForm';
 
 function SinglePost() {
   const { id } = useParams();
@@ -12,12 +14,9 @@ function SinglePost() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Attempt to fetch single post from WP REST API relative path
     fetch(`/wp-json/wp/v2/posts/${id}`)
       .then((res) => {
-        if (!res.ok) {
-          throw new Error('Could not fetch the post (perhaps it does not exist or DB is not setup).');
-        }
+        if (!res.ok) throw new Error('Could not fetch the post.');
         return res.json();
       })
       .then((data) => {
@@ -29,14 +28,8 @@ function SinglePost() {
         setLoading(false);
       });
 
-    // Attempt to fetch comments for this post
     fetch(`/wp-json/wp/v2/comments?post=${id}`)
-      .then((res) => {
-        if (!res.ok) {
-           throw new Error('Could not fetch comments.');
-        }
-        return res.json();
-      })
+      .then((res) => res.ok ? res.json() : [])
       .then((data) => {
         setComments(data);
         setCommentsLoading(false);
@@ -46,14 +39,8 @@ function SinglePost() {
         setCommentsLoading(false);
       });
 
-    // Attempt to fetch tags for this post
     fetch(`/wp-json/wp/v2/tags?post=${id}`)
-      .then((res) => {
-        if (!res.ok) {
-           throw new Error('Could not fetch tags.');
-        }
-        return res.json();
-      })
+      .then((res) => res.ok ? res.json() : [])
       .then((data) => {
         setTags(data);
         setTagsLoading(false);
@@ -63,6 +50,11 @@ function SinglePost() {
         setTagsLoading(false);
       });
   }, [id]);
+
+  const handleNewComment = (newComment) => {
+      // Prepend the new comment to the list
+      setComments([newComment, ...comments]);
+  };
 
   if (loading) return <p className="status-message">Loading post from WordPress backend...</p>;
 
@@ -81,6 +73,10 @@ function SinglePost() {
 
   return (
     <article className="single-post">
+      <Helmet>
+        <title>{post.title.rendered.replace(/<[^>]*>?/gm, "")} - WordPress React Dashboard</title>
+        <meta name="description" content={post.excerpt.rendered.replace(/<[^>]*>?/gm, "")} />
+      </Helmet>
       <div className="back-link-container">
         <Link to="/" className="back-link">&larr; Back to Dashboard</Link>
       </div>
@@ -92,7 +88,6 @@ function SinglePost() {
       </header>
       <div className="single-post-content" dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
 
-      {/* Post Tags */}
       {!tagsLoading && tags.length > 0 && (
           <div className="post-tags">
               <strong>Tags: </strong>
@@ -106,11 +101,13 @@ function SinglePost() {
           </div>
       )}
 
-      {/* Post Comments */}
       <section className="comments-section">
         <h3>Comments</h3>
+
+        <CommentForm postId={post.id} onCommentSubmitted={handleNewComment} />
+
         {commentsLoading && <p>Loading comments...</p>}
-        {!commentsLoading && comments.length === 0 && <p>No comments yet.</p>}
+        {!commentsLoading && comments.length === 0 && <p>No comments yet. Be the first to start the conversation!</p>}
         {!commentsLoading && comments.length > 0 && (
           <ul className="comments-list">
             {comments.map((comment) => (

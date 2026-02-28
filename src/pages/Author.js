@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
+import { Helmet } from "react-helmet-async";
+
 function Author() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
@@ -41,6 +43,10 @@ function Author() {
 
   return (
     <div className="search-results-page">
+      <Helmet>
+        <title>{`Author: ${authorName || id}`} - WordPress React Dashboard</title>
+        <meta name="description" content={`Posts by ${authorName || id}`} />
+      </Helmet>
       <div className="back-link-container">
         <Link to="/" className="back-link">&larr; Back to Dashboard</Link>
       </div>
