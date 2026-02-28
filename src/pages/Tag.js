@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 
-function Category() {
+function Tag() {
   const { id } = useParams();
   const [posts, setPosts] = useState([]);
-  const [categoryName, setCategoryName] = useState('');
+  const [tagName, setTagName] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -13,19 +13,19 @@ function Category() {
     setError(null);
     setPosts([]);
 
-    // Fetch the category name
-    fetch(`/wp-json/wp/v2/categories/${id}`)
+    // Fetch the tag name
+    fetch(`/wp-json/wp/v2/tags/${id}`)
       .then(res => res.ok ? res.json() : null)
       .then(data => {
-          if (data && data.name) setCategoryName(data.name);
+          if (data && data.name) setTagName(data.name);
       })
-      .catch(err => console.error("Error fetching category:", err));
+      .catch(err => console.error("Error fetching tag:", err));
 
-    // Fetch posts for this category
-    fetch(`/wp-json/wp/v2/posts?categories=${id}`)
+    // Fetch posts for this tag
+    fetch(`/wp-json/wp/v2/posts?tags=${id}`)
       .then((res) => {
         if (!res.ok) {
-          throw new Error('Could not fetch posts for this category.');
+          throw new Error('Could not fetch posts for this tag.');
         }
         return res.json();
       })
@@ -44,9 +44,9 @@ function Category() {
       <div className="back-link-container">
         <Link to="/" className="back-link">&larr; Back to Dashboard</Link>
       </div>
-      <h2 className="search-title">Category: {categoryName || id}</h2>
+      <h2 className="search-title">Posts Tagged: {tagName || id}</h2>
 
-      {loading && <p className="status-message">Loading category posts...</p>}
+      {loading && <p className="status-message">Loading tag posts...</p>}
 
       {error && (
         <div className="status-message error-message">
@@ -55,7 +55,7 @@ function Category() {
       )}
 
       {!loading && !error && posts.length === 0 && (
-        <p className="status-message">No posts found in this category.</p>
+        <p className="status-message">No posts found for this tag.</p>
       )}
 
       {!loading && !error && posts.length > 0 && (
@@ -75,4 +75,4 @@ function Category() {
   );
 }
 
-export default Category;
+export default Tag;

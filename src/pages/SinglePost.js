@@ -5,8 +5,10 @@ function SinglePost() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [commentsLoading, setCommentsLoading] = useState(true);
+  const [tagsLoading, setTagsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -43,6 +45,23 @@ function SinglePost() {
         console.error("Comments error:", err);
         setCommentsLoading(false);
       });
+
+    // Attempt to fetch tags for this post
+    fetch(`/wp-json/wp/v2/tags?post=${id}`)
+      .then((res) => {
+        if (!res.ok) {
+           throw new Error('Could not fetch tags.');
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setTags(data);
+        setTagsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Tags error:", err);
+        setTagsLoading(false);
+      });
   }, [id]);
 
   if (loading) return <p className="status-message">Loading post from WordPress backend...</p>;
@@ -67,9 +86,27 @@ function SinglePost() {
       </div>
       <header className="single-post-header">
         <h1 dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+        <div className="single-post-meta">
+            <span>By <Link to={`/author/${post.author}`} className="author-link">Author {post.author}</Link></span>
+        </div>
       </header>
       <div className="single-post-content" dangerouslySetInnerHTML={{ __html: post.content.rendered }} />
 
+      {/* Post Tags */}
+      {!tagsLoading && tags.length > 0 && (
+          <div className="post-tags">
+              <strong>Tags: </strong>
+              <ul className="tag-list">
+                  {tags.map(tag => (
+                      <li key={tag.id}>
+                          <Link to={`/tag/${tag.id}`} className="tag-link">#{tag.name}</Link>
+                      </li>
+                  ))}
+              </ul>
+          </div>
+      )}
+
+      {/* Post Comments */}
       <section className="comments-section">
         <h3>Comments</h3>
         {commentsLoading && <p>Loading comments...</p>}
