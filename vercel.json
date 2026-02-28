@@ -1,6 +1,13 @@
 {
     "rewrites": [
-      { "source": "/(.*)", "destination": "/api/index.js" }
+      { "source": "/wp-admin/(.*)", "destination": "/api/index.js" },
+      { "source": "/wp-includes/(.*)", "destination": "/api/index.js" },
+      { "source": "/wp-content/(.*)", "destination": "/api/index.js" },
+      { "source": "/wp-login.php", "destination": "/api/index.js" },
+      { "source": "/wp-json/(.*)", "destination": "/api/index.js" },
+      { "source": "/xmlrpc.php", "destination": "/api/index.js" },
+      { "source": "/index.php", "destination": "/api/index.js" },
+      { "source": "/(.*)", "destination": "/index.html" }
     ],
     "functions": {
         "api/index.js": {
