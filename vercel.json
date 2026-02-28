@@ -1,5 +1,6 @@
 {
     "rewrites": [
+      { "source": "/wp-admin", "destination": "/api/index.js" },
       { "source": "/wp-admin/(.*)", "destination": "/api/index.js" },
       { "source": "/wp-includes/(.*)", "destination": "/api/index.js" },
       { "source": "/wp-content/(.*)", "destination": "/api/index.js" },

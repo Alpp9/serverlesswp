@@ -4,6 +4,9 @@ import SinglePost from './pages/SinglePost';
 import SearchResults from './pages/SearchResults';
 import Category from './pages/Category';
 import SinglePage from './pages/SinglePage';
+import Tag from './pages/Tag';
+import Author from './pages/Author';
+import NotFound from './pages/NotFound';
 import SearchBar from './components/SearchBar';
 import CategoriesNav from './components/CategoriesNav';
 import PagesNav from './components/PagesNav';
@@ -36,7 +39,10 @@ function App() {
             <Route path="/post/:id" element={<SinglePost />} />
             <Route path="/search/:query" element={<SearchResults />} />
             <Route path="/category/:id" element={<Category />} />
+            <Route path="/tag/:id" element={<Tag />} />
+            <Route path="/author/:id" element={<Author />} />
             <Route path="/page/:id" element={<SinglePage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </div>

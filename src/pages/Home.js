@@ -54,7 +54,7 @@ function Home() {
               <h2 dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </Link>
             <div className="post-excerpt" dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }} />
-            <Link to={`/post/${post.id}`} className="read-more">Read More &rarr;</Link>
+            <div className="post-meta"><span>By <Link to={`/author/${post.author}`} className="author-link">Author {post.author}</Link></span><Link to={`/post/${post.id}`} className="read-more">Read More &rarr;</Link></div>
           </article>
         ))}
       </div>

@@ -137,7 +137,7 @@
   padding: 2rem 1rem;
 }
 
-/* Status Messages (Loading, Errors) */
+/* Status Messages (Loading, Errors, 404) */
 .status-message {
   font-size: 1.2rem;
   margin-top: 2rem;
@@ -147,6 +147,11 @@
   color: #ff6b6b;
   max-width: 600px;
   text-align: center;
+}
+
+.not-found-page {
+  text-align: center;
+  padding: 4rem 1rem;
 }
 
 /* Posts List (Home) */
@@ -194,12 +199,30 @@
   margin-bottom: 1rem;
 }
 
+/* Meta Data & Links */
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-top: 1rem;
+}
+
+.author-link {
+  color: #a8eeff;
+  text-decoration: none;
+}
+
+.author-link:hover {
+  text-decoration: underline;
+}
+
 .read-more {
   display: inline-block;
   color: #61dafb;
   text-decoration: none;
   font-weight: bold;
-  font-size: 0.9rem;
 }
 
 .read-more:hover {
@@ -282,9 +305,15 @@
 .single-post-header h1 {
   color: #61dafb;
   margin-top: 0;
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #333;
-  padding-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.single-post-meta {
+    font-size: 0.95rem;
+    color: #aaa;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 1rem;
 }
 
 .single-post-content {
@@ -306,6 +335,34 @@
   height: auto;
   border-radius: 4px;
   margin: 1rem 0;
+}
+
+/* Tags Section */
+.post-tags {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: #aaa;
+}
+
+.tag-list {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.tag-list li {
+    display: inline;
+    margin-right: 0.5rem;
+}
+
+.tag-link {
+    color: #a8eeff;
+    text-decoration: none;
+}
+
+.tag-link:hover {
+    text-decoration: underline;
 }
 
 /* Comments Section */
